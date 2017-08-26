@@ -1,0 +1,13 @@
+{
+  "perl"        : "6.*",
+  "name"        : "POE6::Tiny",
+  "version"     : "0.0.1",
+  "description" : "A Tiny POE for Perl 6",
+  "authors"     : [ "ultra-gitsome" ],
+  "auth"        : "github:ultra-gitsome",
+  "depends"     : [ "HTTP::Server" ],
+  "provides" : {
+    "POE6::Tiny" : "lib/POE6/Tiny.pm6",  
+  },
+  "source-url"  : "git://github.com/perl6/perl6-poe6-tiny.git"
+} 
