@@ -1,13 +1,16 @@
 {
   "perl"        : "6.*",
   "name"        : "POE6::Tiny",
-  "version"     : "0.0.1",
+  "version"     : "0.0.2",
   "description" : "A Tiny POE for Perl 6",
   "authors"     : [ "ultra-gitsome" ],
   "auth"        : "github:ultra-gitsome",
-  "depends"     : [ "HTTP::Server" ],
+  "depends"     : [ "" ],
   "provides" : {
-    "POE6::Tiny" : "lib/POE6/Tiny.pm6",  
+    "POE6::Tiny" : "lib/POE6/Tiny.pm6", 
+    "POE6::Roles" : "lib/POE6/Roles.pm6",  
+    "POE6::Admin-Helper" : "lib/POE6/Admin-Helper.pm6",  
+    "POE6::MySession" : "lib/POE6/MySession.pm6",  
   },
   "source-url"  : "git://github.com/perl6/perl6-poe6-tiny.git"
 } 
