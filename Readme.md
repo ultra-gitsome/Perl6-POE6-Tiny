@@ -7,9 +7,9 @@ POE6::Tiny-0.0.2. A simple fork/migration of POE::Kernal into Perl 6
 
 This module is a 'Tiny' Perl6 fork of POE using Ingo's POE-0.0.1 module.
 It is configured for POST, YIELD and DELAY method calls. The method calls can be
-made directly to the kernel or from registered session object.
+made directly to the kernel or from a registered session object.
 The POE::Kernal is created with a very simple session.
-It runs the sample code (Tine-examples), but has only preliminary session handling
+It runs the sample code (Tiny-examples), but has only preliminary session handling
 
 ```perl6
 use POE6::Tiny;
@@ -55,7 +55,7 @@ say $POE::Kernel.yield($session2, "say_hello", "Poe Poe too");
 	## the screen, but the 'yield' call will return True. So the
 	## above statement will print "True" when result returns.
 
-	## Create yet another session
+## Create yet another session
 my $session3 = MySession.new;
 
 ## Add the session to the kernel environment
@@ -71,7 +71,7 @@ say $session3.delay("say_hello", 3, "Poe Poe too");
 
 ```
 
-If you find a use run a long lived session, then...
+If you find a reason to use run a long lived session, then...
 
 ```perl6
 $POE::Kernel.run_loop();
@@ -87,9 +87,10 @@ Look in Tiny-examples.pl6.
 
 ## Description
 
-Author credits: (Perl6) POE-0.0.1, Ingo Blechschmidt << <iblech@web.de> >>
-                (Perl5) POE-1.367, Rocco Caputo << <rcaputo@cpan.org> >>  http://poe.perl.org/
- 
+Author credits: 
+    (Perl6) POE-0.0.1, Ingo Blechschmidt << <iblech@web.de> >>
+	(Perl5) POE-1.367, Rocco Caputo << <rcaputo@cpan.org> >>  http://poe.perl.org/
+
 The intent is to satisfy simple POE needs in Perl6, not to re-write POE in Perl 6.
 Therefore this module will not have all of the bookkeeping embedded within POE,
 The basic functionalities intended are stable POST, YIELD, and DELAY events,
@@ -101,6 +102,7 @@ This code started from Ingo's POE-0.0.1 code. The syntax was been updated to run
 on the (2017-07) version of Perl 6. A relatively simple run_loop is available.
 
 Base Methods:
+
 POST: A synchronise call to the kernel to execute a callback within the session object.
 Has an implicit sync'ed return value.
 
@@ -113,6 +115,7 @@ the session object. Uses a channel to a react[or] state that is triggered by an 
 The caller is not linked to the callback, so no value is returned directly.
 
 
+## Rationale
 POE is a Perl framework for reactive systems and multitasking networked applications. 
 See [poe.perl.org](http://poe.perl.org) for more information about POE.
 
