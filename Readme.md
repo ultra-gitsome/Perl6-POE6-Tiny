@@ -1,6 +1,6 @@
 # POE6::Tiny
 
-POE6::Tiny-0.0.2. A simple fork/migration of POE::Kernal into Perl 6
+POE6::Tiny-0.0.3. A simple fork/migration of POE::Kernal into Perl 6
 
 
 ## Synopsis
@@ -68,6 +68,67 @@ say $session3.yield("say_hello", "Poe Poe too");
 ## and...a 'delay' method, with 'timeout' argument
 say $session3.delay("say_hello", 3, "Poe Poe too");
 
+
+```
+## Additional Info
+
+Version 0.0.3 uses Roles to bring in common methods from Kernel::Main and POE6::Session.
+Most of the methods are in the role definitions. So your Session class definition looks like
+'class MySession does POE6::Session'. The POE6::Kernel is extensible and offers an option
+for custom startup options/methods - though, I'm not sure that is a good idea. 
+
+Two processes have been added. In the kernel, it is possible to register and use a dedicated
+messaging channel between [session] objects. The intent is to minimuze much of the setup to
+pass small data parts around an app. After the "dchannel" is registered, then the dchannel is called
+with the dchannel id and a message hash. The channel is async and assumes that the caller and callee
+operate independently. If the message requires a response, a "backcall" can be configured to
+return a message to a receiving option within the caller.
+
+A process has been added to the Session role to provide a timeout function for the dedicated
+channel process. It times out the response of a function that was assigned to provide a response
+from the callee to the caller. Upon timeout, a default message is sent to the caller indicating 
+failure and any possible response from the function is trapped and discarded. This may have uses elsewhere.
+
+The process method is "waitontoken()". It takes a token key, a dispatch and responder option, and the timeout to perform
+an async response timeout. The easiest token to use is '$token_key = now'. Any non-conflicting ID will work. This method 
+is transparent to the dedicated channel registration and use.
+
+Using a dedicated channel:
+```perl6
+## some stuff to pass around
+my @a = (a,b);
+my %h = (a => 1, b => 2);
+my $message = { i_mess => 1, mess => 'dchannel message', a_mess => item(@a), h_mess => item(%h) };
+
+## add some aliases to the sessions to make referencing easier
+$session3.session_alias(alias => 'tweedle');
+
+## and/or
+my $session4 = MySession.new( poe_kernel => $POE::Kernel, alias => 'dee', set_session_messaging => 1  );
+    ## NOTE that the reactors need to be configured within the 'to' session object in order to receive
+	## dchannel messages...so 'set_session_messaging => 1' is needed.
+## also, can use
+$session3.set_session_messaging(1);
+
+
+## register a dedicated channel. It returns the dchannel_id used for calling the dchannel.
+my $dchann_id = $POE::Kernel.register_dchannel( session_from_key => 'tweedle', session_to_key => 'dee', destination => 'new_call' );
+
+## send a message (new_call should print a default message to the screen).
+$POE::Kernel.dchannel_message( dchannel_id => $dchann_id, message => $message );
+
+## register a dedicated channel with a response and timeout. If the timeout is 0, then the response will be processed
+## whenever the message is eventually sent. The timeout provides an indication of process failure.
+my $dchann2_id = $POE::Kernel.register_dchannel( 
+					session_from_key => 'tweedle',
+					session_to_key => 'dee', 
+					destination => 'sync_call',
+					responder => 'send_back_on_dchannel',
+					await_response => 1,
+					timeout => 2,
+					);
+					
+$POE::Kernel.dchannel_message( dchannel_id => $dchann2_id, message => $message );
 
 ```
 
