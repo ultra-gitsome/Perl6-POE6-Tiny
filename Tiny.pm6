@@ -3,11 +3,11 @@
 ####
 # This module is a 'Tiny' Perl6 fork of POE using Ingo's POE-0.0.1 module
 # Author credits: (Perl6) POE-0.0.1, Ingo Blechschmidt C<< <iblech@web.de> >>
-#                 (Perl5) POE-0.0.1, Ingo Blechschmidt C<< <iblech@web.de> >>
+#                 (Perl5) POE-1.367, Rocco Caputo << <rcaputo@cpan.org> >>  http://poe.perl.org/
 # 
 # The intent is to satisfy simple POE needs in Perl6, not to re-write POE
 # Therefore this module does not have all of the bookkeeping embedded within POE,
-# and that surely makes the POE code more stable.
+# That bookkeeping surely makes the POE 5 code more stable.
 # Note. The 1st iteration of this code is nearly an identical fork of POE-0.0.1
 #
 ####
